@@ -1,0 +1,25 @@
+services:
+  mongo:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "localdev"
+      MONGO_INITDB_ROOT_PASSWORD: "Localdev123"
+    volumes:
+      - mongo-data:/data/db
+
+  mongoexpress:
+    image: mongo-express
+    restart: always
+    container_name: mongoexpress
+    ports:
+      - "3100:8081"
+    environment:
+      ME_CONFIG_MONGODB_URL: "mongodb://localdev:Localdev123@mongo:27017/"
+      ME_CONFIG_BASICAUTH_ENABLED: true
+      ME_CONFIG_BASICAUTH_USERNAME: "localdev"
+      ME_CONFIG_BASICAUTH_PASSWORD: "Localdev@123"
+
+volumes:
+  mongo-data:

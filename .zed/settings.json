@@ -1,0 +1,15 @@
+{
+  "prettier": {
+    "allowed": true,
+  },
+  "colorize_brackets": true,
+  "lsp": {
+    "typescript-language-server": {
+      "initialization_options": {
+        "vtsls": {
+          "autoUseWorkspaceTsdk": true,
+        },
+      },
+    },
+  },
+}
