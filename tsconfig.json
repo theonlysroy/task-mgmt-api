@@ -27,7 +27,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@lib/*": ["./src/lib/*"],
-      "@utils/*": ["./src/utils/*"],
-    },
-  },
+      "@utils/*": ["./src/utils/*"]
+    }
+  }
 }

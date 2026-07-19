@@ -1,10 +1,11 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 // [TODO] dynamic env path based on dev environment
-dotenv.config({ path: '.env.local' });
+dotenv.config({ path: ".env.local" });
 
 // [TODO] add zod schema validation
 const envVars = process.env;
 export const config = {
+  nodeEnv: envVars.NODE_ENV,
   port: envVars.PORT,
   mongo: {
     host: envVars.MONGO_HOST,

@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.git/
+.zed/
+
+.gitignore
+.prettierrc
+package*.json
+tsconfig*.json
+.env*
+docker-compose.yml
