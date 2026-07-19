@@ -1,3 +1,5 @@
+import app from "@/app.js";
+import { config } from "@/lib/config.js";
 import { connectDb } from "@lib/db.js";
 import { logger } from "@lib/logger.js";
 import mongoose from "mongoose";
@@ -5,6 +7,11 @@ import mongoose from "mongoose";
 async function main() {
   try {
     await connectDb();
+    app.listen([config.port, config.host], () => {
+      logger.info(
+        `Application running on http://${config.host}:${config.port}`,
+      );
+    });
   } catch (error) {
     logger.error("APP STARTUP FAILED.", error);
     process.exit(1);

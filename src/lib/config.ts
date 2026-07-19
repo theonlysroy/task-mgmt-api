@@ -6,7 +6,8 @@ dotenv.config({ path: ".env.local", quiet: true });
 const envVars = process.env;
 export const config = {
   nodeEnv: envVars.NODE_ENV,
-  port: envVars.PORT,
+  port: Number(envVars.PORT),
+  host: envVars.HOST,
   mongo: {
     host: envVars.MONGO_HOST,
     port: envVars.MONGO_PORT,
