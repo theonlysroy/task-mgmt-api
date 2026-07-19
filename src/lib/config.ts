@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 // [TODO] dynamic env path based on dev environment
-dotenv.config({ path: ".env.local" });
+dotenv.config({ path: ".env.local", quiet: true });
 
 // [TODO] add zod schema validation
 const envVars = process.env;

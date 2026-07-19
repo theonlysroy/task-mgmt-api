@@ -5,7 +5,8 @@ dist/
 
 .gitignore
 .prettierrc
-package*.json
-tsconfig*.json
+package-local.json
+pnpm-lock.json
+pnpm-workspace.yaml
 .env*
 docker-compose.yml

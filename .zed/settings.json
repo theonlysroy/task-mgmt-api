@@ -7,7 +7,16 @@
     "typescript-language-server": {
       "initialization_options": {
         "vtsls": {
-          "autoUseWorkspaceTsdk": true
+          "autoUseWorkspaceTsdk": true,
+        }
+      }
+    },
+    "vtsls": {
+      "settings": {
+        "typescript": {
+          "preferences": {
+            "importModuleSpecifier": "non-relative"
+          }
         }
       }
     }
