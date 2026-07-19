@@ -7,7 +7,7 @@ const envVars = process.env;
 export const config = {
   nodeEnv: envVars.NODE_ENV,
   port: Number(envVars.PORT),
-  host: envVars.HOST,
+  host: envVars.HOST as string,
   mongo: {
     host: envVars.MONGO_HOST,
     port: envVars.MONGO_PORT,

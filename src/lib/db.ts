@@ -23,7 +23,7 @@ export const connectDb = async () => {
   const connectionString = buildDbConnectionString("mongo");
   try {
     const conn = await mongoose.connect(connectionString, {
-      timeoutMS: 1000,
+      connectTimeoutMS: 2000,
     });
     logger.info("Database connected. DB:", conn.connection.db?.databaseName);
   } catch (error: any) {
