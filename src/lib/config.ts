@@ -14,4 +14,5 @@ export const config = {
     password: envVars.MONGO_PASSWORD,
     dbName: envVars.MONGO_DB_NAME,
   },
+  cookieSecret: envVars.COOKIE_SECRET,
 };
