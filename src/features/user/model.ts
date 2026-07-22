@@ -1,10 +1,11 @@
 import { model, Schema } from "mongoose";
 
-export enum UserRole {
-  Admin = "admin",
-  Member = "member",
-}
-type TUserRoles = `${UserRole}`;
+export const UserRole = {
+  Admin: "admin",
+  Member: "member",
+} as const;
+
+type TUserRoles = (typeof UserRole)[keyof typeof UserRole];
 
 interface IUser {
   email: string;
