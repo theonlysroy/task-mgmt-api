@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 
 async function main() {
   try {
-    await connectDb();
+    // await connectDb();
     app.listen(config.port, config.host, () => {
       logger.info(
         `Application running on http://${config.host}:${config.port}`,
