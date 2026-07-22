@@ -12,7 +12,6 @@ interface IUser {
   passwordHash: string;
   role: TUserRoles;
 }
-console.log(Object.values(UserRole), UserRole);
 
 const userSchema = new Schema<IUser>(
   {

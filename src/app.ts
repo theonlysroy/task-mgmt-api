@@ -27,5 +27,4 @@ app.use(cookiePolicies);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-console.log(User);
 export default app;
