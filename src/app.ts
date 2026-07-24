@@ -5,6 +5,7 @@ import { globalRateLimiter } from "@/lib/rateLimit.js";
 import { corsPolicies } from "@/lib/corsConfig.js";
 import { cookiePolicies } from "@/lib/cookiePolicy.js";
 import v1ApiRouter from "@/api/v1/router.js";
+import { globalErrorHandler } from "@/lib/errorHandler.js";
 
 const app = express();
 
@@ -29,5 +30,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routers
 app.use("/api/v1", v1ApiRouter);
+
+// global error handler middleware
+app.use(globalErrorHandler);
 
 export default app;
