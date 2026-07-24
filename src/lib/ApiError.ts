@@ -7,6 +7,7 @@ export class ApiError extends Error {
     message: string,
     public errors?: unknown,
     public isOperational = true,
+    public showStack = true,
   ) {
     super(message);
     this.success = false;
@@ -20,7 +21,7 @@ export class ApiError extends Error {
   static forbidden = (msg = "Forbidden") =>
     new ApiError(StatusCodes.FORBIDDEN, msg);
   static notFound = (msg = "Not Found") =>
-    new ApiError(StatusCodes.NOT_FOUND, msg);
+    new ApiError(StatusCodes.NOT_FOUND, msg, [], false, false);
   static conflict = (msg = "Conflict", errors?: unknown) =>
     new ApiError(StatusCodes.CONFLICT, msg, errors);
 }

@@ -38,12 +38,12 @@ export const globalErrorHandler = (
   if (!apiError.isOperational) {
     logger.error("Api not operational for unexptected error", req.path);
   }
-
   res.status(apiError.statusCode).json({
     success: apiError.success,
     statusCode: apiError.statusCode,
     message: apiError.message,
     ...(apiError.errors ? { errors: apiError.errors } : { errors: [] }),
-    ...(config.nodeEnv === "development" && { stack: apiError.stack }),
+    ...(config.nodeEnv === "development" &&
+      apiError.showStack && { stack: apiError.stack }),
   });
 };
