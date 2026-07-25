@@ -2,11 +2,5 @@ node_modules/
 dist/
 .git/
 .zed/
-
-.gitignore
-.prettierrc
-package-local.json
-pnpm-lock.json
+pnpm-lock.yaml
 pnpm-workspace.yaml
-.env*
-docker-compose.yml
