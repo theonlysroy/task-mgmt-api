@@ -11,3 +11,21 @@
 - `ApiError` and _static methods_ to handle the errors with structured error responses
 
 - JWT `jsonwebtoken` sign() function type error - need to add `SignOptions` or `StringValue` type parsing from the npm package - `ms`
+
+- Zod schema to keys - `keyof typeof<schema>`, `Object.keys(schema.shape)`
+
+- `logrotate` linux uitility to automatically rotate any intented logs.
+
+  ```bash
+  # /etc/logrotate.d/<app_name>
+
+  /path/to/logs/*.log {
+      weekly
+      rotate 4
+      compress
+      delaycompress
+      missingok
+      notifempty
+      copytruncate
+  }
+  ```
