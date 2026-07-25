@@ -2,9 +2,7 @@ import mongoose from "mongoose";
 import { config } from "./config.js";
 import { logger } from "./logger.js";
 
-const buildDbConnectionString = (
-  dbDriver: "mongo" | "postgres" | "mysql",
-): string => {
+const buildDbConnectionString = (dbDriver: "mongo" | "postgres" | "mysql"): string => {
   if (!dbDriver) {
     console.log("DB Driver is required.");
     return "";

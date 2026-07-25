@@ -11,7 +11,4 @@ interface IRefreshToken {
 
 const refreshTokenSchema = new Schema<IRefreshToken>({}, { timestamps: true });
 
-export const RefreshToken = model<IRefreshToken>(
-  "RefreshToken",
-  refreshTokenSchema,
-);
+export const RefreshToken = model<IRefreshToken>("RefreshToken", refreshTokenSchema);

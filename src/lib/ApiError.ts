@@ -14,14 +14,9 @@ export class ApiError extends Error {
     Error.captureStackTrace(this, this.constructor);
   }
 
-  static badRequest = (msg = "Bad Request", errors?: unknown) =>
-    new ApiError(StatusCodes.BAD_REQUEST, msg, errors);
-  static unauthorized = (msg = "Unauthorized") =>
-    new ApiError(StatusCodes.UNAUTHORIZED, msg);
-  static forbidden = (msg = "Forbidden") =>
-    new ApiError(StatusCodes.FORBIDDEN, msg);
-  static notFound = (msg = "Not Found") =>
-    new ApiError(StatusCodes.NOT_FOUND, msg, [], false, false);
-  static conflict = (msg = "Conflict", errors?: unknown) =>
-    new ApiError(StatusCodes.CONFLICT, msg, errors);
+  static badRequest = (msg = "Bad Request", errors?: unknown) => new ApiError(StatusCodes.BAD_REQUEST, msg, errors);
+  static unauthorized = (msg = "Unauthorized") => new ApiError(StatusCodes.UNAUTHORIZED, msg);
+  static forbidden = (msg = "Forbidden") => new ApiError(StatusCodes.FORBIDDEN, msg);
+  static notFound = (msg = "Not Found") => new ApiError(StatusCodes.NOT_FOUND, msg, [], false, false);
+  static conflict = (msg = "Conflict", errors?: unknown) => new ApiError(StatusCodes.CONFLICT, msg, errors);
 }

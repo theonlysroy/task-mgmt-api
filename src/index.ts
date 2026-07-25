@@ -8,9 +8,7 @@ async function main() {
   try {
     // await connectDb();
     app.listen(config.port, config.host, () => {
-      logger.info(
-        `Application running on http://${config.host}:${config.port}`,
-      );
+      logger.info(`Application running on http://${config.host}:${config.port}`);
     });
   } catch (error) {
     logger.error("APP STARTUP FAILED.\n", JSON.stringify(error));
