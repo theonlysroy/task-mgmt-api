@@ -29,3 +29,9 @@
       copytruncate
   }
   ```
+
+- MongoDB transactions and sessions require a replica set, but the standard MongoDB Docker image starts as a standalone server by default. Standalone instances lack the replication oplog required to track and roll back transactional changes.
+
+- This error happens because you have configured database authentication/authorization (MONGO_INITDB_ROOT_USERNAME and MONGO_INITDB_ROOT_PASSWORD) alongside a replica set (--replSet).When authentication is active, MongoDB requires nodes in a replica set to securely communicate with each other. It enforces this by requiring a shared keyFile
+
+- Extend mongoose model interface using `Document`

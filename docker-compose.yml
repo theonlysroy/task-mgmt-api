@@ -2,12 +2,21 @@ services:
   mongo:
     image: mongo
     container_name: mongodb
+    ports:
+      - "27017:27017"
+    command: ["--replSet", "rs0", "--keyFile", "/data/configdb/mongodb-keyfile", "--bind_ip_all", "--ipv6"]
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: "localdev"
       MONGO_INITDB_ROOT_PASSWORD: "Localdev123"
+    healthcheck:
+      test: mongosh --ipv6 -u localdev -p Localdev123 --eval "try { rs.status().ok } catch (e) { rs.initiate({_id:'rs0',members:[{_id:0,host:'mongodb:27017'}]}) }"
+      interval: 5s
+      timeout: 5s
+      retries: 5
     volumes:
       - mongo-data:/data/db
+      - ./mongodb-keyfile:/data/configdb/mongodb-keyfile:ro
 
   mongoexpress:
     image: mongo-express
@@ -16,10 +25,19 @@ services:
     ports:
       - "3100:8081"
     environment:
-      ME_CONFIG_MONGODB_URL: "mongodb://localdev:Localdev123@mongo:27017/"
+      ME_CONFIG_MONGODB_SERVER: "mongodb"
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: "true"
+      ME_CONFIG_MONGODB_ADMINUSERNAME: "localdev"
+      ME_CONFIG_MONGODB_ADMINPASSWORD: "Localdev123"
+      ME_CONFIG_MONGODB_OPTIONS: "replicaSet=rs0&authSource=admin"
+      # Basic credentials for logging into the web panel UI at port 3100
       ME_CONFIG_BASICAUTH_ENABLED: true
       ME_CONFIG_BASICAUTH_USERNAME: "localdev"
       ME_CONFIG_BASICAUTH_PASSWORD: "Localdev@123"
+    depends_on:
+      mongo:
+        condition: service_healthy
 
 volumes:
   mongo-data:

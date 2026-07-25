@@ -1,14 +1,14 @@
 import { RefreshToken } from "@/api/auth/model.js";
-import type { LoginResponse } from "@/api/auth/schema.js";
+import type { LoginResponse, RegisterRequest, RegisterResponse } from "@/api/auth/schema.js";
 import { User } from "@/api/user/model.js";
 import { ApiError } from "@/lib/ApiError.js";
-import { config } from "@/lib/config.js";
 import { AppConstants } from "@/lib/constants.js";
 import { isPasswordCorrect } from "@/lib/helpers.js";
 import { logger } from "@/lib/logger.js";
 import { ErrorMsg } from "@/lib/messages.js";
 import { generateTokens } from "@/lib/tokenGenerator.js";
 import { addDays } from "date-fns";
+import mongoose from "mongoose";
 
 const loginService = async (...args: any): Promise<LoginResponse> => {
   logger.info("Login data ==>", args);
@@ -45,6 +45,47 @@ const loginService = async (...args: any): Promise<LoginResponse> => {
   };
 };
 
+const registerService = async (args: RegisterRequest["body"]): Promise<RegisterResponse> => {
+  const { email, name, password, role } = args;
+
+  const session = await mongoose.startSession();
+  const existedUser = await User.findOne({ email });
+  if (existedUser) throw ApiError.badRequest("Email already registered.");
+
+  try {
+    session.startTransaction();
+    const userObj = new User({
+      email,
+      name,
+      passwordHash: password,
+      role,
+    });
+    const user = await userObj.save({ session });
+
+    if (!user) throw ApiError.internalError("Registration failed.");
+    const userData = {
+      id: user._id.toString(),
+      email: user.email,
+      createdAt: user.createdAt,
+    };
+    const { accessToken, refreshToken } = await generateTokens(userData);
+    await session.commitTransaction();
+    return {
+      ...user,
+      token: {
+        accessToken,
+        refreshToken,
+      },
+    };
+  } catch (error) {
+    await session.abortTransaction();
+    throw error;
+  } finally {
+    session.endSession();
+  }
+};
+
 export const authService = {
   login: loginService,
+  register: registerService,
 };

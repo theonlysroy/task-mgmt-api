@@ -9,7 +9,7 @@ const buildDbConnectionString = (dbDriver: "mongo" | "postgres" | "mysql"): stri
   }
   switch (dbDriver) {
     case "mongo":
-      return `mongodb://${config.mongo.user}:${config.mongo.password}@${config.mongo.host}:${config.mongo.port}/${config.mongo.dbName}?authSource=admin`;
+      return `mongodb://${config.mongo.user}:${config.mongo.password}@${config.mongo.host}:${config.mongo.port}/${config.mongo.dbName}?authSource=admin&replicaSet=rs0`;
     case "mysql":
       return "test-mysql";
     case "postgres":

@@ -1,3 +1,4 @@
+import { UserRole } from "@/api/user/model.js";
 import { AppConstants } from "@/lib/constants.js";
 import { ValidationMsg } from "@/lib/messages.js";
 import type { ValidatedRequest } from "@/types.js";
@@ -28,4 +29,28 @@ export const loginResSchema = z.object({
 export type LoginRequest = ValidatedRequest<typeof loginReqSchema>;
 export type LoginResponse = z.infer<typeof loginResSchema>;
 
-// -----------------------------------------------------
+// ----------------------------------- register
+export const registerReqSchema = z.object({
+  body: z.object({
+    email: z.email(),
+    name: z.string().min(4, "Name should be at least 4 characters long."),
+    password: z
+      .string()
+      .regex(
+        AppConstants.password.regex,
+        "Password must contain at least 6 characters, 1 uppercase, 1 lowercase, 1 digit and 1 special character",
+      ),
+    role: z.enum(Object.values(UserRole)),
+  }),
+});
+
+export const registerResSchema = z.object({
+  id: z.string(),
+  createdAt: z.date().optional(),
+  token: z.object({
+    accessToken: z.string(),
+    refreshToken: z.string().optional(),
+  }),
+});
+export type RegisterRequest = ValidatedRequest<typeof registerReqSchema>;
+export type RegisterResponse = z.infer<typeof registerResSchema>;
