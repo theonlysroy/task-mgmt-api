@@ -29,6 +29,9 @@ importers:
       express-rate-limit:
         specifier: ^8.6.0
         version: 8.6.0(express@5.2.1)
+      express-serve-static-core:
+        specifier: ^0.1.1
+        version: 0.1.1
       helmet:
         specifier: ^8.3.0
         version: 8.3.0
@@ -44,6 +47,9 @@ importers:
       uuid:
         specifier: ^14.0.1
         version: 14.0.1
+      zod:
+        specifier: ^4.4.3
+        version: 4.4.3
     devDependencies:
       '@types/cookie-parser':
         specifier: ^1.4.10
@@ -635,6 +641,9 @@ packages:
     peerDependencies:
       express: '>= 4.11'
 
+  express-serve-static-core@0.1.1:
+    resolution: {integrity: sha512-phQFPo1vVwBLOjDq+EspUY6PpWZIs/s62Lvu6QuReViQ9j9ANBnMqPBRwdxs3zxNmpMJ9KBKrmMqCjMwHnGRyQ==}
+
   express@5.2.1:
     resolution: {integrity: sha512-hIS4idWWai69NezIdRt2xFVofaF4j+6INOpJlVOLDO8zXGpUVEVzIYk12UUi2JzjEzWL3IOAxcTubgz9Po0yXw==}
     engines: {node: '>= 18'}
@@ -1105,6 +1114,9 @@ packages:
     resolution: {integrity: sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==}
     engines: {node: '>=6'}
 
+  zod@4.4.3:
+    resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
+
 snapshots:
 
   '@cspotcode/source-map-support@0.8.1':
@@ -1527,6 +1539,8 @@ snapshots:
       ip-address: 10.2.0
     transitivePeerDependencies:
       - supports-color
+
+  express-serve-static-core@0.1.1: {}
 
   express@5.2.1:
     dependencies:
@@ -2030,3 +2044,5 @@ snapshots:
   wrappy@1.0.2: {}
 
   yn@3.1.1: {}
+
+  zod@4.4.3: {}
