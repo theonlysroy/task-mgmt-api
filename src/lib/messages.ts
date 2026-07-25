@@ -4,6 +4,7 @@ export const ErrorMsg = {
   cors: "Blocked by CORS policy: Unauthorized origin.",
   routeNotFound: "Requested url not found on API v1",
   validationFailed: "Validation Failed. Request object dont match intended structure",
+  configValidationFailed: "Validation Failed. Config missing.",
   validationFailedFor: (part: string) => `Validation Failed for ${part}`,
   loginFailed: "Invalid email or password",
   tokenGenFailed: "Token genration failed. Please try again",

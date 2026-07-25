@@ -28,7 +28,7 @@
       "@/*": ["./src/*"],
       "@lib/*": ["./src/lib/*"],
       "@utils/*": ["./src/utils/*"],
-      "@middlewares/*": ["./src/api/middlewares/*"],
-    },
-  },
+      "@middlewares/*": ["./src/api/middlewares/*"]
+    }
+  }
 }

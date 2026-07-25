@@ -1,24 +1,28 @@
 import dotenv from "dotenv";
-// [TODO] dynamic env path based on dev environment
-dotenv.config({ path: ".env.local", quiet: true });
+import { treeifyError, ZodError } from "zod";
+import { ApiError } from "@lib/ApiError.js";
+import { ErrorMsg } from "@/lib/messages.js";
+import { buildRawEnvData, envSchema, type Config } from "@/lib/env.js";
+import { logger } from "@/lib/logger.js";
 
-// [TODO] add zod schema validation
-const envVars = process.env;
-export const config = {
-  nodeEnv: envVars.NODE_ENV,
-  port: Number(envVars.PORT),
-  host: envVars.HOST as string,
-  mongo: {
-    host: envVars.MONGO_HOST,
-    port: envVars.MONGO_PORT,
-    user: envVars.MONGO_USER,
-    password: envVars.MONGO_PASSWORD,
-    dbName: envVars.MONGO_DB_NAME,
-  },
-  cookieSecret: envVars.COOKIE_SECRET,
-  jwt: {
-    secret: String(envVars.JWT_SECRET),
-    accessExpiry: String(envVars.JWT_ACCESS_TOKEN_EXPIRY),
-    refreshExpiry: String(envVars.JWT_REFRESH_TOKEN_EXPIRY),
-  },
+const envPath = process.env.NODE_ENV === "development" ? ".env.local" : ".env.prod";
+dotenv.config({ path: envPath, quiet: true });
+
+const makeConfig = async (): Promise<Config> => {
+  try {
+    const envVars = buildRawEnvData(process.env);
+    logger.info("envVars =>", { envVars });
+    const result = await envSchema.safeParseAsync(envVars);
+    if (!result.success) {
+      throw result.error;
+    }
+    return result.data;
+  } catch (error: any) {
+    logger.error(ErrorMsg.configValidationFailed, error.stack);
+    process.exit(1);
+  }
 };
+
+const config = await makeConfig();
+logger.info("Config =>", config);
+export { config };
