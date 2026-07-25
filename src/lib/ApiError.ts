@@ -21,6 +21,8 @@ export class ApiError extends Error {
   static forbidden = (msg = "Forbidden") => new ApiError(StatusCodes.FORBIDDEN, msg);
   static notFound = (msg = "Not Found") => new ApiError(StatusCodes.NOT_FOUND, msg, [], false, false);
   static conflict = (msg = "Conflict", errors?: unknown) => new ApiError(StatusCodes.CONFLICT, msg, errors);
+  static internalError = (msg = "Internal Error", errors?: unknown) =>
+    new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, msg, errors);
 }
 
 export class ValidationError extends ApiError {

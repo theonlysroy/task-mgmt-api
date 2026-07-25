@@ -16,4 +16,9 @@ export const config = {
     dbName: envVars.MONGO_DB_NAME,
   },
   cookieSecret: envVars.COOKIE_SECRET,
+  jwt: {
+    secret: String(envVars.JWT_SECRET),
+    accessExpiry: String(envVars.JWT_ACCESS_TOKEN_EXPIRY),
+    refreshExpiry: String(envVars.JWT_REFRESH_TOKEN_EXPIRY),
+  },
 };

@@ -3,4 +3,7 @@ export const AppConstants = {
     minLength: 8,
     maxLength: 8,
   },
+  jwt: {
+    refreshExpiry: 30,
+  },
 } as const;

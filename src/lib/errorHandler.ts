@@ -10,6 +10,7 @@ export const globalErrorHandler = (err: Error, req: Request, res: Response, next
   if (res.headersSent) return next(err);
 
   // [NOTE] add zod errors handler from validation logic layer
+  logger.error("err -->", err.stack);
   let apiError = null;
   if (err instanceof ApiError) {
     apiError = err;
@@ -21,12 +22,12 @@ export const globalErrorHandler = (err: Error, req: Request, res: Response, next
   }
 
   if (!apiError.isOperational) {
-    logger.error("Api not operational for unexptected error", req.path);
+    logger.error("API Error ==>", req.path);
   }
   res.status(apiError.statusCode).json({
     success: apiError.success,
     statusCode: apiError.statusCode,
-    message: apiError.message,
+    message: apiError.message || getReasonPhrase(500),
     ...(apiError.errors ? { errors: apiError.errors } : { errors: [] }),
     ...(config.nodeEnv === "development" && apiError.showStack && { stack: apiError.stack }),
   });

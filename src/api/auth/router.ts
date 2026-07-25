@@ -6,6 +6,6 @@ import { Router } from "express";
 
 const authRouter = Router();
 
-authRouter.post("/login/:random", validate(loginReqSchema, "body"), loginController);
+authRouter.post("/login", validate(loginReqSchema, "body"), loginController);
 
 export { authRouter };

@@ -9,3 +9,5 @@
 - __api response__ custom helper to remove res.status().json() repeating and having structured API response object
 
 - `ApiError` and _static methods_ to handle the errors with structured error responses
+
+- JWT `jsonwebtoken` sign() function type error - need to add `SignOptions` or `StringValue` type parsing from the npm package - `ms`

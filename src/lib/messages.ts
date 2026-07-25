@@ -5,6 +5,8 @@ export const ErrorMsg = {
   routeNotFound: "Requested url not found on API v1",
   validationFailed: "Validation Failed. Request object dont match intended structure",
   validationFailedFor: (part: string) => `Validation Failed for ${part}`,
+  loginFailed: "Invalid email or password",
+  tokenGenFailed: "Token genration failed. Please try again",
 } as const;
 
 export const SuccessMsg = {

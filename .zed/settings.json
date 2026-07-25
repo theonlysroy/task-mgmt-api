@@ -4,13 +4,13 @@
   },
   "colorize_brackets": true,
   "lsp": {
-    "typescript-language-server": {
-      "initialization_options": {
-        "vtsls": {
-          "autoUseWorkspaceTsdk": true,
-        }
-      }
-    },
+    // "typescript-language-server": {
+    //   "initialization_options": {
+    //     "vtsls": {
+    //       "autoUseWorkspaceTsdk": true,
+    //     }
+    //   }
+    // },
     "vtsls": {
       "settings": {
         "typescript": {

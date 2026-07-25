@@ -17,7 +17,13 @@ export const loginResSchema = z.object({
   token: z.object({
     access: z.string().min(32),
   }),
-  user: z.object({}),
+  user: z.object({
+    id: z.string(),
+    name: z.string(),
+    email: z.string(),
+    createdAt: z.string().optional(),
+    role: z.string(),
+  }),
 });
 export type LoginRequest = ValidatedRequest<typeof loginReqSchema>;
 export type LoginResponse = z.infer<typeof loginResSchema>;

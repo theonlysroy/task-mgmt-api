@@ -16,7 +16,6 @@ export const validate = (schema: ZodObject, part: RequestPart = "all") => {
         const tree = treeifyError(result.error);
         throw ApiError.validationFailed(ErrorMsg.validationFailed, tree);
       }
-      logger.info("data ==>", result.data);
       req["body"] = result.data.body;
       next();
     } catch (error) {
