@@ -10,7 +10,7 @@ export const globalErrorHandler = (err: Error, req: Request, res: Response, next
   if (res.headersSent) return next(err);
 
   // [NOTE] add zod errors handler from validation logic layer
-  logger.error("err -->", err.stack);
+  logger.error("err -->", JSON.stringify(err.stack));
   let apiError = null;
   if (err instanceof ApiError) {
     apiError = err;
