@@ -1,5 +1,11 @@
 import { RefreshToken } from "@/api/auth/model.js";
-import type { LoginResponse, RegisterRequest, RegisterResponse } from "@/api/auth/schema.js";
+import type {
+  LoginResponse,
+  RefreshTokenRequest,
+  RefreshTokenResponse,
+  RegisterRequest,
+  RegisterResponse,
+} from "@/api/auth/schema.js";
 import { User } from "@/api/user/model.js";
 import { ApiError } from "@/lib/ApiError.js";
 import { AppConstants } from "@/lib/constants.js";
@@ -85,7 +91,31 @@ const registerService = async (args: RegisterRequest["body"]): Promise<RegisterR
   }
 };
 
+const refreshTokenService = async (args: RefreshTokenRequest["body"]): Promise<RefreshTokenResponse> => {
+  const { token } = args;
+  const tokenDoc = await RefreshToken.findOne({ tokenHash: token });
+  if (!tokenDoc) throw ApiError.unauthorized("Invalid or expired refresh token.");
+  tokenDoc["revoked"] = true;
+  await tokenDoc.save();
+  const user = await User.findById(tokenDoc.userId).select("-__v");
+  if (!user) throw ApiError.unauthorized("Invalid or expired refresh token.");
+  const { accessToken, refreshToken } = await generateTokens(user.toObject());
+  const newRefreshToken = new RefreshToken({
+    tokenHash: refreshToken,
+    userId: user._id,
+    expiresAt: addDays(new Date(), 10),
+  });
+  await newRefreshToken.save();
+  return {
+    token: {
+      accessToken,
+      refreshToken,
+    },
+  };
+};
+
 export const authService = {
   login: loginService,
   register: registerService,
+  refreshToken: refreshTokenService,
 };

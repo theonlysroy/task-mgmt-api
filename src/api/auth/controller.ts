@@ -13,3 +13,8 @@ export const registerController = asyncHandler(async (req: RegisterRequest, res)
   const data = await authService.register(req.body);
   apiResponse.created(res, data, "Register successful");
 });
+
+export const refreshTokenController = asyncHandler(async (req, res) => {
+  const data = await authService.refreshToken(req.body);
+  apiResponse.ok(res, data, "Refresh token successfully created.");
+});

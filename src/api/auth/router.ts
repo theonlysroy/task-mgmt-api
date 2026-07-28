@@ -1,7 +1,6 @@
-import { loginController, registerController } from "@/api/auth/controller.js";
+import { loginController, refreshTokenController, registerController } from "@/api/auth/controller.js";
 import { loginReqSchema, registerReqSchema } from "@/api/auth/schema.js";
 import { validate } from "@/api/middlewares/validate.js";
-import { logger } from "@/lib/logger.js";
 import { Router } from "express";
 
 const authRouter = Router();
@@ -34,7 +33,32 @@ const authRouter = Router();
  *       401:
  *         description: Invalid credentials
  */
+
 authRouter.post("/login", validate(loginReqSchema, "body"), loginController);
 authRouter.post("/register", validate(registerReqSchema, "body"), registerController);
+/**
+ * @openapi
+ * /auth/refresh-token:
+ *   post:
+ *     summary: Generate new refresh token
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - token
+ *             properties:
+ *               token:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Refresh token generation successful
+ *       401:
+ *         description: Unauthorized
+ */
+authRouter.post("/refresh-token", refreshTokenController);
 
 export { authRouter };

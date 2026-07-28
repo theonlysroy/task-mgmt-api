@@ -6,5 +6,6 @@ export const AppConstants = {
   },
   jwt: {
     refreshExpiry: 30,
+    regex: /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/,
   },
 } as const;

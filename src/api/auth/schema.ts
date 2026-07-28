@@ -54,3 +54,17 @@ export const registerResSchema = z.object({
 });
 export type RegisterRequest = ValidatedRequest<typeof registerReqSchema>;
 export type RegisterResponse = z.infer<typeof registerResSchema>;
+
+export const refreshTokenSchema = z.object({
+  body: z.object({
+    token: z.string("Token is required").regex(AppConstants.jwt.regex, "Invalid JWT token"),
+  }),
+});
+export const refreshTokenResSchema = z.object({
+  token: z.object({
+    accessToken: z.string(),
+    refreshToken: z.string().optional(),
+  }),
+});
+export type RefreshTokenRequest = ValidatedRequest<typeof refreshTokenSchema>;
+export type RefreshTokenResponse = z.infer<typeof refreshTokenResSchema>;
