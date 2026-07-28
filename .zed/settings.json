@@ -20,5 +20,6 @@
         }
       }
     }
-  }
+  },
+  "extend_comment_on_newline": true
 }

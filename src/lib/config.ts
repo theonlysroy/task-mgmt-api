@@ -1,6 +1,4 @@
 import dotenv from "dotenv";
-import { treeifyError, ZodError } from "zod";
-import { ApiError } from "@lib/ApiError.js";
 import { ErrorMsg } from "@/lib/messages.js";
 import { buildRawEnvData, envSchema, type Config } from "@/lib/env.js";
 import { logger } from "@/lib/logger.js";
@@ -24,5 +22,9 @@ const makeConfig = async (): Promise<Config> => {
 };
 
 const config = await makeConfig();
+// add server custom property
+const serverPath = `${config.host}:${config.port}/api/${config.apiVersion}`;
+const serverUrl = config.nodeEnv === "development" ? `http://${serverPath}` : `https://${serverPath}`;
+config["serverUrl"] = serverUrl;
 logger.info("Config =>", config);
 export { config };

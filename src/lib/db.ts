@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { config } from "./config.js";
-import { logger } from "./logger.js";
+import { config } from "@lib/config.js";
+import { logger } from "@lib/logger.js";
 
 const buildDbConnectionString = (dbDriver: "mongo" | "postgres" | "mysql"): string => {
   if (!dbDriver) {
@@ -9,7 +9,7 @@ const buildDbConnectionString = (dbDriver: "mongo" | "postgres" | "mysql"): stri
   }
   switch (dbDriver) {
     case "mongo":
-      return `mongodb://${config.mongo.user}:${config.mongo.password}@${config.mongo.host}:${config.mongo.port}/${config.mongo.dbName}?authSource=admin&replicaSet=rs0`;
+      return `mongodb://${config.mongo.user}:${config.mongo.password}@${config.mongo.host}:${config.mongo.port}/${config.mongo.dbName}?authSource=admin`;
     case "mysql":
       return "test-mysql";
     case "postgres":
