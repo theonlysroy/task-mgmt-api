@@ -32,6 +32,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routers
+// redirect to docs for index route
+app.get("/", (_, res) => {
+  res.redirect("/docs");
+});
 app.use("/api/v1", v1ApiRouter);
 
 // Docs

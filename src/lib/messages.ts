@@ -19,7 +19,7 @@ export const ValidationMsg = {
     required: "Email is a required field.",
   },
   password: {
-    required: "Password is a required field.",
+    required: "Required field.",
     minLength: "Password must be at least 8 characters",
   },
 } as const;

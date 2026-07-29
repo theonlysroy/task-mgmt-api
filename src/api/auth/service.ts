@@ -19,7 +19,7 @@ import mongoose from "mongoose";
 const loginService = async (...args: any): Promise<LoginResponse> => {
   logger.info("Login data ==>", args);
   const [email, password, ip, userAgent] = args;
-  const user = await User.findOne({ email }).select("-__v");
+  const user = await User.findOne({ email }).select("-__v +passwordHash");
 
   logger.info("user", user);
   if (!user) throw ApiError.unauthorized(ErrorMsg.loginFailed);
@@ -41,6 +41,7 @@ const loginService = async (...args: any): Promise<LoginResponse> => {
   return {
     token: {
       access: tokens.accessToken,
+      refresh: tokens.refreshToken,
     },
     user: {
       id: user.id.toString(),
@@ -53,42 +54,24 @@ const loginService = async (...args: any): Promise<LoginResponse> => {
 
 const registerService = async (args: RegisterRequest["body"]): Promise<RegisterResponse> => {
   const { email, name, password, role } = args;
-
-  const session = await mongoose.startSession();
   const existedUser = await User.findOne({ email });
   if (existedUser) throw ApiError.badRequest("Email already registered.");
-
-  try {
-    session.startTransaction();
-    const userObj = new User({
-      email,
-      name,
-      passwordHash: password,
-      role,
-    });
-    const user = await userObj.save({ session });
-
-    if (!user) throw ApiError.internalError("Registration failed.");
-    const userData = {
-      id: user._id.toString(),
-      email: user.email,
-      createdAt: user.createdAt,
-    };
-    const { accessToken, refreshToken } = await generateTokens(userData);
-    await session.commitTransaction();
-    return {
-      ...user,
-      token: {
-        accessToken,
-        refreshToken,
-      },
-    };
-  } catch (error) {
-    await session.abortTransaction();
-    throw error;
-  } finally {
-    session.endSession();
-  }
+  const userObj = new User({
+    email,
+    name,
+    passwordHash: password,
+    role,
+  });
+  const user = await userObj.save();
+  if (!user) throw ApiError.internalError("Registration failed.");
+  const userData = {
+    id: user._id.toString(),
+    email: user.email,
+    createdAt: user.createdAt,
+  };
+  return {
+    ...userData,
+  };
 };
 
 const refreshTokenService = async (args: RefreshTokenRequest["body"]): Promise<RefreshTokenResponse> => {

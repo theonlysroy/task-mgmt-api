@@ -40,8 +40,8 @@ export const buildRawEnvData = (pEnv: NodeJS.ProcessEnv): Record<ConfigKeys, any
     cookieSecret: String(pEnv.COOKIE_SECRET),
     jwt: {
       secret: String(pEnv.JWT_SECRET),
-      accessTokenExpiry: String(pEnv.JWT_ACCESS_TOKEN_EXPIRY),
-      refreshTokenExpiry: String(pEnv.JWT_REFRESH_TOKEN_EXPIRY),
+      accessTokenExpiry: String(pEnv.JWT_ACCESS_TTL),
+      refreshTokenExpiry: String(pEnv.JWT_REFRESH_TTL),
     },
   };
 };

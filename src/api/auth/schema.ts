@@ -7,7 +7,7 @@ import z from "zod";
 // -------------------------------- login
 export const loginReqSchema = z.object({
   body: z.object({
-    email: z.email().nonempty(ValidationMsg.email.required),
+    email: z.email("Required field").nonempty(ValidationMsg.email.required),
     password: z
       .string(ValidationMsg.password.required)
       .min(AppConstants.password.minLength, ValidationMsg.password.minLength),
@@ -17,6 +17,7 @@ export const loginReqSchema = z.object({
 export const loginResSchema = z.object({
   token: z.object({
     access: z.string().min(32),
+    refresh: z.string().min(32),
   }),
   user: z.object({
     id: z.string(),
@@ -47,10 +48,6 @@ export const registerReqSchema = z.object({
 export const registerResSchema = z.object({
   id: z.string(),
   createdAt: z.date().optional(),
-  token: z.object({
-    accessToken: z.string(),
-    refreshToken: z.string().optional(),
-  }),
 });
 export type RegisterRequest = ValidatedRequest<typeof registerReqSchema>;
 export type RegisterResponse = z.infer<typeof registerResSchema>;
