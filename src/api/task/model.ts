@@ -1,10 +1,10 @@
-import { model, Schema, type ObjectId } from "mongoose";
+import { model, Schema, Types } from "mongoose";
 
 interface ITask extends Document {
   title: string;
   description: string;
   isCompleted: boolean;
-  assignedTo?: ObjectId;
+  assignedTo?: Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }
