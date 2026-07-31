@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import { StatusCodes } from "http-status-codes";
 import jwt, { type SignOptions } from "jsonwebtoken";
 
-export const generateTokens = async (payload: any) => {
+export const generateTokens = async <T extends Object>(payload: T) => {
   try {
     const accessToken = jwt.sign(payload, config.jwt.secret, {
       expiresIn: config.jwt.accessTokenExpiry,

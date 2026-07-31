@@ -1,12 +1,14 @@
 import { RefreshToken } from "@/api/auth/model.js";
 import type {
+  LoginRequest,
   LoginResponse,
   RefreshTokenRequest,
   RefreshTokenResponse,
   RegisterRequest,
   RegisterResponse,
 } from "@/api/auth/schema.js";
-import { User } from "@/api/user/model.js";
+import type { TUserToken } from "@/api/auth/types.js";
+import { User, type TUserRoles } from "@/api/user/model.js";
 import { ApiError } from "@/lib/ApiError.js";
 import { AppConstants } from "@/lib/constants.js";
 import { isPasswordCorrect } from "@/lib/helpers.js";
@@ -14,7 +16,6 @@ import { logger } from "@/lib/logger.js";
 import { ErrorMsg } from "@/lib/messages.js";
 import { generateTokens } from "@/lib/tokenGenerator.js";
 import { addDays } from "date-fns";
-import mongoose from "mongoose";
 
 const loginService = async (...args: any): Promise<LoginResponse> => {
   logger.info("Login data ==>", args);
@@ -26,7 +27,11 @@ const loginService = async (...args: any): Promise<LoginResponse> => {
   const isMatch = await isPasswordCorrect(password, user.passwordHash);
   if (!isMatch) throw ApiError.unauthorized(ErrorMsg.loginFailed);
 
-  const tokens = await generateTokens(user.toObject());
+  const tokens = await generateTokens<TUserToken>({
+    id: user._id.toString(),
+    email: user.email,
+    role: user.role,
+  });
 
   // save refresh token
   const savedToken = await RefreshToken.create({

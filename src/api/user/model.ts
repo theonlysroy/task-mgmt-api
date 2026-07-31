@@ -6,7 +6,7 @@ export const UserRole = {
   Member: "member",
 } as const;
 
-type TUserRoles = (typeof UserRole)[keyof typeof UserRole];
+export type TUserRoles = (typeof UserRole)[keyof typeof UserRole];
 
 interface IUser extends Document {
   email: string;
