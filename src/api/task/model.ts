@@ -1,6 +1,7 @@
 import { model, Schema, Types } from "mongoose";
 
 interface ITask extends Document {
+  userId: Types.ObjectId;
   title: string;
   description: string;
   isCompleted: boolean;
@@ -11,6 +12,7 @@ interface ITask extends Document {
 
 const taskSchema = new Schema<ITask>(
   {
+    userId: { type: Schema.Types.ObjectId, ref: "User" },
     title: { type: String, required: true },
     description: { type: String },
     isCompleted: { type: Boolean, default: false },

@@ -13,3 +13,17 @@ export const taskResSchema = z.object({
 });
 export type TaskRequest = ValidatedRequest<typeof taskReqSchema>;
 export type TaskResponse = z.infer<typeof taskResSchema>;
+
+// --------- req by id
+export const taskReqByIdSchema = z.object({
+  params: z.object({
+    id: z.string("Task id is a required param").min(24, "Must be a valid id"),
+  }),
+});
+export const taskResByIdSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  isCompleted: z.boolean(),
+});
+export type TaskByIdRequest = ValidatedRequest<typeof taskReqByIdSchema>;
+export type TaskByIdResponse = z.infer<typeof taskResByIdSchema>;
