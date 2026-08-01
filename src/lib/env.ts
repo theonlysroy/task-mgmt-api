@@ -1,3 +1,4 @@
+import { AppConstants } from "@/lib/constants.js";
 import z from "zod";
 
 export const envSchema = z.object({
@@ -21,6 +22,11 @@ export const envSchema = z.object({
   serverUrl: z.string().optional(),
   smtp: z.object({
     resendApiKey: z.string(),
+    emailFrom: z.string(),
+    host: z.string().regex(AppConstants.smtp.regex, "Invalid SMTP host"),
+    port: z.union([...AppConstants.smtp.allowedPorts.map((p) => z.literal(p))]),
+    user: z.string(),
+    password: z.string(),
   }),
 });
 
@@ -48,6 +54,11 @@ export const buildRawEnvData = (pEnv: NodeJS.ProcessEnv): Record<ConfigKeys, any
     },
     smtp: {
       resendApiKey: String(pEnv.RESEND_API_KEY),
+      emailFrom: String(pEnv.EMAIL_FROM),
+      host: String(pEnv.SMTP_HOST),
+      port: parseInt(String(pEnv.SMTP_PORT), 10),
+      user: String(pEnv.SMTP_USER),
+      password: String(pEnv.SMTP_PASSWORD),
     },
   };
 };

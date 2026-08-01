@@ -11,7 +11,7 @@ import type { TUserToken } from "@/api/auth/types.js";
 import { User, type TUserRoles } from "@/api/user/model.js";
 import { ApiError } from "@/lib/ApiError.js";
 import { AppConstants } from "@/lib/constants.js";
-import { emailService } from "@/lib/emailProvider.js";
+import { emailService } from "@/lib/emailService.js";
 import { isPasswordCorrect } from "@/lib/helpers.js";
 import { logger } from "@/lib/logger.js";
 import { ErrorMsg } from "@/lib/messages.js";
@@ -72,14 +72,14 @@ const registerService = async (args: RegisterRequest["body"]): Promise<RegisterR
   if (!user) throw ApiError.internalError("Registration failed.");
   const userData = {
     id: user._id.toString(),
+    name: user.name,
     email: user.email,
     createdAt: user.createdAt,
   };
-  try {
-    await emailService.send({ to: user.email });
-  } catch (error) {
-    logger.error("Email Sending Failed =>", error);
-  }
+  await emailService.sendWelcomeEmail({
+    ...userData,
+    createdAt: user.createdAt.toString(),
+  });
   return {
     ...userData,
   };

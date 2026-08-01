@@ -8,4 +8,8 @@ export const AppConstants = {
     refreshExpiry: 1,
     regex: /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/,
   },
+  smtp: {
+    regex: /^(?=.{1,253}$)(?!-)(?:[a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,63}$/,
+    allowedPorts: [25, 587, 456, 2525],
+  },
 } as const;
