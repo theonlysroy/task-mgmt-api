@@ -6,13 +6,46 @@ import { Router } from "express";
 
 const taskRouter = Router();
 
-// POST /task
+/**
+ * @openapi
+ * /task/create:
+ *  post:
+ *    summary: Create Task
+ *    description: Authenticated user can create tasks
+ *    tags: [Task]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            required:
+ *              - title
+ *              - description
+ *            properties:
+ *              title:
+ *                type: string
+ *              description:
+ *                type: string
+ */
 taskRouter.post("/create", authCheck, validate(taskReqSchema), createTaskController);
 
-// GET /tasks
+/**
+ * @openapi
+ * /task:
+ *  get:
+ *    summary: Fetch all authenticated user tasks
+ *    tags: [Task]
+ */
 taskRouter.get("/", authCheck, fetchTasksController);
 
-// GEt /tasks/:id
+/**
+ * @openapi
+ * /task/:id:
+ *  get:
+ *    summary: Fetch a user task by task id
+ *    tags: [Task]
+ */
 taskRouter.get("/:id", authCheck, validate(taskReqByIdSchema, "params"), fetchTaskByIdController);
 
 export { taskRouter };

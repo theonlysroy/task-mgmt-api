@@ -10,6 +10,7 @@ const authRouter = Router();
  * /auth/login:
  *   post:
  *     summary: User Login
+ *     security: []
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -40,7 +41,8 @@ authRouter.post("/login", validate(loginReqSchema, "body"), loginController);
  * /auth/register:
  *   post:
  *     summary: Register a new user
- *     description: Creates a new user account and returns an access token (and optionally a refresh token, if not delivered via httpOnly cookie).
+ *     description: Creates a new user account and returns an access token (and optionally .
+ *     security: []
  *     tags:
  *       - Auth
  *     requestBody:
@@ -141,6 +143,7 @@ authRouter.post("/register", validate(registerReqSchema, "body"), registerContro
  * /auth/refresh-token:
  *   post:
  *     summary: Generate new refresh token
+ *     security: []
  *     tags: [Auth]
  *     requestBody:
  *       required: true

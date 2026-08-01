@@ -16,6 +16,10 @@ const options: swaggerJsdoc.Options = {
       },
     },
     security: [{ bearerAuth: [] }],
+    tags: [
+      { name: "Auth", description: "Feat: Authenticated" },
+      { name: "Task", description: "Feat: Task" },
+    ],
   },
   apis: ["./src/api/**/router.ts", "./src/api/**/schema.ts"], // where it looks for JSDoc comments
 };
