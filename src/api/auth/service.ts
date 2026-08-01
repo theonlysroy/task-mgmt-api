@@ -11,6 +11,7 @@ import type { TUserToken } from "@/api/auth/types.js";
 import { User, type TUserRoles } from "@/api/user/model.js";
 import { ApiError } from "@/lib/ApiError.js";
 import { AppConstants } from "@/lib/constants.js";
+import { emailService } from "@/lib/emailProvider.js";
 import { isPasswordCorrect } from "@/lib/helpers.js";
 import { logger } from "@/lib/logger.js";
 import { ErrorMsg } from "@/lib/messages.js";
@@ -74,6 +75,11 @@ const registerService = async (args: RegisterRequest["body"]): Promise<RegisterR
     email: user.email,
     createdAt: user.createdAt,
   };
+  try {
+    await emailService.send({ to: user.email });
+  } catch (error) {
+    logger.error("Email Sending Failed =>", error);
+  }
   return {
     ...userData,
   };

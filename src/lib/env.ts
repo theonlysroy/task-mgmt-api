@@ -19,6 +19,9 @@ export const envSchema = z.object({
     refreshTokenExpiry: z.string().default("30d"),
   }),
   serverUrl: z.string().optional(),
+  smtp: z.object({
+    resendApiKey: z.string(),
+  }),
 });
 
 export type Config = z.infer<typeof envSchema>;
@@ -42,6 +45,9 @@ export const buildRawEnvData = (pEnv: NodeJS.ProcessEnv): Record<ConfigKeys, any
       secret: String(pEnv.JWT_SECRET),
       accessTokenExpiry: String(pEnv.JWT_ACCESS_TTL),
       refreshTokenExpiry: String(pEnv.JWT_REFRESH_TTL),
+    },
+    smtp: {
+      resendApiKey: String(pEnv.RESEND_API_KEY),
     },
   };
 };

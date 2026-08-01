@@ -9,7 +9,7 @@ dotenv.config({ path: envPath, quiet: true });
 const makeConfig = async (): Promise<Config> => {
   try {
     const envVars = buildRawEnvData(process.env);
-    logger.info("envVars =>", { envVars });
+    logger.info("ENV config loaded");
     const result = await envSchema.safeParseAsync(envVars);
     if (!result.success) {
       throw result.error;
@@ -26,5 +26,5 @@ const config = await makeConfig();
 const serverPath = `${config.host}:${config.port}/api/${config.apiVersion}`;
 const serverUrl = config.nodeEnv === "development" ? `http://${serverPath}` : `https://${serverPath}`;
 config["serverUrl"] = serverUrl;
-logger.info("Config =>", config);
+// logger.info("Config =>", config);
 export { config };
