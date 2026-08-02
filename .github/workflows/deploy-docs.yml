@@ -46,7 +46,7 @@ jobs:
         run: pnpm install -D vitepress@2.0.0-alpha.18
 
       - name: Build docs with VitePress
-        run: pnpm vitepress build docs
+        run: pnpm run docs:build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
