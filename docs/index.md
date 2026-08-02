@@ -1,4 +1,4 @@
-# TaskFlow Backend Handbook
+# TaskFlow Backend Documentation
 
 TaskFlow is a deliberately practice-oriented TypeScript REST API for learning how a production-style backend is assembled. It combines Express, MongoDB, Mongoose, authentication, authorization, email delivery, Redis-backed jobs, validation, security middleware, logging, and API documentation.
 
