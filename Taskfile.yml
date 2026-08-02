@@ -1,0 +1,80 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: "3"
+
+vars:
+  COMPOSE_FILE: docker-compose.yml
+
+tasks:
+  default:
+    desc: List available tasks
+    cmds:
+      - task --list
+
+  db:
+    desc: Start MongoDB and Mongo Express
+    aliases: [db:start]
+    cmds:
+      - docker compose -f {{.COMPOSE_FILE}} up -d
+
+  db:down:
+    desc: Stop and remove database containers
+    cmds:
+      - docker compose -f {{.COMPOSE_FILE}} down
+
+  db:clean:
+    desc: Remove database containers, networks, and data volumes
+    cmds:
+      - docker compose -f {{.COMPOSE_FILE}} down --volumes --remove-orphans
+
+  db:remove:
+    desc: Remove database containers, volumes, and images
+    cmds:
+      - docker compose -f {{.COMPOSE_FILE}} down --rmi all --volumes --remove-orphans
+
+  db:health:
+    desc: Check MongoDB and Mongo Express health
+    cmds:
+      - docker compose -f {{.COMPOSE_FILE}} ps
+      - 'docker compose -f {{.COMPOSE_FILE}} exec -T mongo mongosh --quiet --username localdev --password Localdev123 --authenticationDatabase admin --eval "quit(db.adminCommand({ ping: 1 }).ok === 1 ? 0 : 1)"'
+      - curl --fail --silent --show-error http://localhost:3100/ > /dev/null
+
+  db:logs:
+    desc: Follow logs for MongoDB and Mongo Express
+    cmds:
+      - docker compose -f {{.COMPOSE_FILE}} logs -f
+
+  db:logs:mongo:
+    desc: Follow MongoDB logs
+    cmds:
+      - docker compose -f {{.COMPOSE_FILE}} logs -f mongo
+
+  db:logs:viewer:
+    desc: Follow Mongo Express logs
+    cmds:
+      - docker compose -f {{.COMPOSE_FILE}} logs -f mongoexpress
+
+  dev:
+    desc: Start the development server
+    cmds:
+      - pnpm dev
+
+  format:check:
+    desc: Check project formatting
+    cmds:
+      - pnpm run format:check
+
+  format:
+    desc: Format the project
+    cmds:
+      - pnpm run format
+
+  type-check:
+    desc: Run the TypeScript type checker
+    cmds:
+      - pnpm run type-check
+
+  new:module:
+    desc: "Create a new feature module (usage: task new:module -- <module_name>)"
+    cmds:
+      - pnpm run new:module -- {{.CLI_ARGS}}
