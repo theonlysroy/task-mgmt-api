@@ -42,6 +42,7 @@
 
 - Docker compose environment two syntaxes -
   - if used List format, need `=` sign to assign value
+
     ```txt
     - ANY_ENV_VARIABLE=value
     ```
