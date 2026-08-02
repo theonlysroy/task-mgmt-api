@@ -47,6 +47,13 @@ There is no test script, test directory, test configuration, or CI workflow in t
 
 For local MongoDB, `docker compose up` starts MongoDB and Mongo Express only; the API itself runs on the host with `pnpm dev`. `docker-compose.prod.yml` starts MongoDB as an authenticated single-node replica set for transaction support and requires the ignored `mongodb-keyfile`. Both Compose files contain local/demo credentials in the configuration; never reuse them for real deployments or copy credentials into documentation.
 
+## IMPORTANT NOTE TO FOLLOW BY THE AGENTS
+
+- Don't run the build script `pnpm build`.
+- Don't run the type check script `pnpm type-check`.
+- Don't run the format check `pnpm format:check` or format `pnpm format` scripts.
+- Don't do any end-to-end or unit testing for the code you are writing unless explicitly mentioned in the prompt or asked to do.
+
 ## Configuration and operations
 
 - Copy `.env.example` to `.env.local` for development and replace every placeholder. Development config explicitly loads `.env.local`; non-development config loads `.env.prod`. Neither file is tracked. There is no application container or `.env.prod` template in the repository.
