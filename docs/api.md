@@ -6,32 +6,32 @@ The current base URL is `/api/v1`. Swagger UI at `/docs` is the interactive refe
 
 ### Authentication
 
-| Method | Route | Auth | Purpose |
-| --- | --- | --- | --- |
-| POST | `/auth/register` | No | Create a user account |
-| POST | `/auth/login` | No | Verify credentials and issue tokens |
-| POST | `/auth/refresh-token` | No | Exchange a refresh token for new tokens |
+| Method | Route                 | Auth | Purpose                                 |
+| ------ | --------------------- | ---- | --------------------------------------- |
+| POST   | `/auth/register`      | No   | Create a user account                   |
+| POST   | `/auth/login`         | No   | Verify credentials and issue tokens     |
+| POST   | `/auth/refresh-token` | No   | Exchange a refresh token for new tokens |
 
 Registration validates email, name, password complexity, and role (`admin` or `member`). Login validates email and a minimum password length.
 
 ### Tasks
 
-| Method | Route | Auth | Purpose |
-| --- | --- | --- | --- |
-| POST | `/task/create` | Yes | Create a task |
-| GET | `/task` | Yes | Fetch the authenticated user's tasks |
-| GET | `/task/:id` | Yes | Fetch one task by id |
+| Method | Route          | Auth | Purpose                              |
+| ------ | -------------- | ---- | ------------------------------------ |
+| POST   | `/task/create` | Yes  | Create a task                        |
+| GET    | `/task`        | Yes  | Fetch the authenticated user's tasks |
+| GET    | `/task/:id`    | Yes  | Fetch one task by id                 |
 
 Tasks contain an owner, title, description, completion state, and optional assignee.
 
 ### Workspaces
 
-| Method | Route | Auth | Purpose |
-| --- | --- | --- | --- |
-| POST | `/workspace` | Yes | Create a workspace and make the user its owner and first member |
-| GET | `/workspace/:id` | Yes | Read a workspace as an owner or member |
-| POST | `/workspace/:id/invite` | Yes | Owner invites an existing user |
-| GET | `/workspace/invitation/:token/accept` | No | Accept an invitation token |
+| Method | Route                                 | Auth | Purpose                                                         |
+| ------ | ------------------------------------- | ---- | --------------------------------------------------------------- |
+| POST   | `/workspace`                          | Yes  | Create a workspace and make the user its owner and first member |
+| GET    | `/workspace/:id`                      | Yes  | Read a workspace as an owner or member                          |
+| POST   | `/workspace/:id/invite`               | Yes  | Owner invites an existing user                                  |
+| GET    | `/workspace/invitation/:token/accept` | No   | Accept an invitation token                                      |
 
 The invitation model records workspace, recipient email, inviter, token, expiry, and acceptance state. Invitation acceptance is intentionally a public link, but the service must still identify the intended recipient before changing membership.
 
@@ -56,9 +56,9 @@ Schemas wrap request parts:
 
 ```ts
 z.object({
-  body: z.object({ /* fields */ }),
-  params: z.object({ /* fields */ }),
-  query: z.object({ /* fields */ }),
+  body: z.object({/* fields */}),
+  params: z.object({/* fields */}),
+  query: z.object({/* fields */}),
 });
 ```
 
