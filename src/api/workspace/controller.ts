@@ -23,9 +23,7 @@ export const workspaceInviteController = asyncHandler(async (req: WorkspaceInvit
   apiResponse.ok(res, data, "Invitation sent");
 });
 
-export const acceptWorkspaceInvitationController = asyncHandler(
-  async (req: WorkspaceInvitationTokenRequest, res) => {
-    const data = await workspaceService.acceptWorkspaceInvitationService(req.params);
-    apiResponse.ok(res, data, "Invitation accepted");
-  },
-);
+export const acceptWorkspaceInvitationController = asyncHandler(async (req: WorkspaceInvitationTokenRequest, res) => {
+  const data = await workspaceService.acceptWorkspaceInvitationService(req.params);
+  apiResponse.ok(res, data, "Invitation accepted");
+});
