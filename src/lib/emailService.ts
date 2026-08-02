@@ -1,5 +1,6 @@
 import type { LoginResponse } from "@/api/auth/schema.js";
 import { config } from "@/lib/config.js";
+import { workspaceInviteTemplate } from "@/lib/email/templates/workspace-invite.js";
 import { welcomeTemplate } from "@/lib/email/templates/welcome.js";
 import {
   MailtrapSmtpEmailProvider,
@@ -17,6 +18,19 @@ export class EmailService {
       to: `${user.name} <${user.email}>`,
       subject: "Welcome to TaskFlow !",
       html: welcomeTemplate(user.name),
+    });
+  }
+
+  async sendWorkspaceInviteEmail(
+    invitee: Pick<LoginResponse["user"], "name" | "email">,
+    workspaceName: string,
+    message: string,
+  ) {
+    await this.provider.sendMail({
+      from: config.smtp.emailFrom,
+      to: `${invitee.name} <${invitee.email}>`,
+      subject: `Invitation to join ${workspaceName} on TaskFlow`,
+      html: workspaceInviteTemplate(invitee.name, workspaceName, message),
     });
   }
 

@@ -9,6 +9,7 @@ import type {
 import { User } from "@/api/user/model.js";
 import { Workspace } from "@/api/workspace/model.js";
 import { ApiError } from "@/lib/ApiError.js";
+import { emailService } from "@/lib/emailService.js";
 import { Types } from "mongoose";
 
 const getUserId = (user?: RequestUser): string | Types.ObjectId => {
@@ -103,6 +104,12 @@ export const workspaceInviteService = async (
     { new: true },
   );
   if (!updatedWorkspace) throw ApiError.conflict("User is already a member of this workspace");
+
+  await emailService.sendWorkspaceInviteEmail(
+    { name: invitee.name, email: invitee.email },
+    workspace.name ?? "TaskFlow workspace",
+    args.message ?? "",
+  );
 
   return {};
 };

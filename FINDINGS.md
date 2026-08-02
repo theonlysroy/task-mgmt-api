@@ -35,3 +35,5 @@
 - This error happens because you have configured database authentication/authorization (MONGO_INITDB_ROOT_USERNAME and MONGO_INITDB_ROOT_PASSWORD) alongside a replica set (--replSet).When authentication is active, MongoDB requires nodes in a replica set to securely communicate with each other. It enforces this by requiring a shared keyFile
 
 - Extend mongoose model interface using `Document`
+
+- mongoose: the `new` option for `findOneAndUpdate()` and `findOneAndReplace()` is deprecated. Use `returnDocument: 'after'` instead.
