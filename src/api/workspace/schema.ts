@@ -45,5 +45,18 @@ export const workspaceInviteReqSchema = z.object({
 });
 export const workspaceInviteResSchema = z.object({});
 
+export const workspaceInvitationTokenReqSchema = z.object({
+  params: z.object({
+    token: z.string("Invitation token is required").min(1, "Invitation token is required"),
+  }),
+});
+
+export const acceptWorkspaceInvitationResSchema = z.object({
+  workspaceId: z.string(),
+  accepted: z.boolean(),
+});
+
 export type WorkspaceInviteRequest = ValidatedRequest<typeof workspaceInviteReqSchema>;
 export type WorkspaceInviteResponse = z.infer<typeof workspaceInviteResSchema>;
+export type WorkspaceInvitationTokenRequest = ValidatedRequest<typeof workspaceInvitationTokenReqSchema>;
+export type AcceptWorkspaceInvitationResponse = z.infer<typeof acceptWorkspaceInvitationResSchema>;

@@ -1,4 +1,9 @@
-export const workspaceInviteTemplate = (inviteeName: string, workspaceName: string, message: string): string =>
+export const workspaceInviteTemplate = (
+  inviteeName: string,
+  workspaceName: string,
+  message: string,
+  invitationUrl: string,
+): string =>
   `
   <!DOCTYPE html>
   <html lang="en">
@@ -72,7 +77,7 @@ export const workspaceInviteTemplate = (inviteeName: string, workspaceName: stri
 
                 <div style="text-align:center;margin:40px 0;">
                   <a
-                    href="{{INVITE_URL}}"
+                    href="${invitationUrl}"
                     style="
                       display:inline-block;
                       background:#2563eb;
@@ -92,7 +97,7 @@ export const workspaceInviteTemplate = (inviteeName: string, workspaceName: stri
                 </p>
 
                 <p style="font-size:14px;word-break:break-all;color:#2563eb;">
-                  {{INVITE_URL}}
+                  ${invitationUrl}
                 </p>
 
                 <p style="margin-top:32px;color:#222;">

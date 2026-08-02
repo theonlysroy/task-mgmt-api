@@ -1,6 +1,7 @@
 import { authCheck } from "@/api/middlewares/auth.js";
 import { validate } from "@/api/middlewares/validate.js";
 import {
+  acceptWorkspaceInvitationController,
   createWorkspaceController,
   getWorkspaceByIdController,
   workspaceInviteController,
@@ -8,6 +9,7 @@ import {
 import {
   createWorkspaceReqSchema,
   getWorkspaceByIdReqSchema,
+  workspaceInvitationTokenReqSchema,
   workspaceInviteReqSchema,
 } from "@/api/workspace/schema.js";
 import { Router } from "express";
@@ -138,7 +140,7 @@ workspaceRouter.get("/:id", authCheck, validate(getWorkspaceByIdReqSchema), getW
  * /workspace/{id}/invite:
  *   post:
  *     summary: Invite a member to a workspace
- *     description: Adds an existing user to a workspace. Only the workspace owner can invite members.
+ *     description: Sends an invitation to an existing user. The user is added to the workspace after accepting the invitation. Only the workspace owner can invite members.
  *     operationId: inviteWorkspaceMember
  *     tags: [Workspace]
  *     security:
@@ -204,5 +206,37 @@ workspaceRouter.get("/:id", authCheck, validate(getWorkspaceByIdReqSchema), getW
  *         description: User is already a member of the workspace.
  */
 workspaceRouter.post("/:id/invite", authCheck, validate(workspaceInviteReqSchema), workspaceInviteController);
+
+/**
+ * @openapi
+ * /workspace/invitation/{token}/accept:
+ *   get:
+ *     summary: Accept a workspace invitation
+ *     description: Validates the invitation token, adds the invited user to the workspace, and marks the invitation as accepted.
+ *     operationId: acceptWorkspaceInvitation
+ *     tags: [Workspace]
+ *     security: []
+ *     parameters:
+ *       - name: token
+ *         in: path
+ *         required: true
+ *         description: Invitation token from the invitation email.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Invitation accepted.
+ *       400:
+ *         description: Invitation token is expired or invalid.
+ *       404:
+ *         description: Invitation not found.
+ *       409:
+ *         description: Invitation was already accepted.
+ */
+workspaceRouter.get(
+  "/invitation/:token/accept",
+  validate(workspaceInvitationTokenReqSchema),
+  acceptWorkspaceInvitationController,
+);
 
 export { workspaceRouter };

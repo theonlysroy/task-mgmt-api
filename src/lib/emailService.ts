@@ -25,12 +25,13 @@ export class EmailService {
     invitee: Pick<LoginResponse["user"], "name" | "email">,
     workspaceName: string,
     message: string,
+    invitationUrl: string,
   ) {
     await this.provider.sendMail({
       from: config.smtp.emailFrom,
       to: `${invitee.name} <${invitee.email}>`,
       subject: `Invitation to join ${workspaceName} on TaskFlow`,
-      html: workspaceInviteTemplate(invitee.name, workspaceName, message),
+      html: workspaceInviteTemplate(invitee.name, workspaceName, message, invitationUrl),
     });
   }
 

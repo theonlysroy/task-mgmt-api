@@ -1,15 +1,19 @@
 import type {
+  AcceptWorkspaceInvitationResponse,
   CreateWorkspaceRequest,
   CreateWorkspaceResponse,
   GetWorkspaceByIdRequest,
   GetWorkspaceByIdResponse,
+  WorkspaceInvitationTokenRequest,
   WorkspaceInviteRequest,
   WorkspaceInviteResponse,
 } from "@/api/workspace/schema.js";
 import { User } from "@/api/user/model.js";
-import { Workspace } from "@/api/workspace/model.js";
+import { Workspace, WorkspaceInvite } from "@/api/workspace/model.js";
 import { ApiError } from "@/lib/ApiError.js";
+import { config } from "@/lib/config.js";
 import { emailService } from "@/lib/emailService.js";
+import { randomBytes } from "node:crypto";
 import { Types } from "mongoose";
 
 const getUserId = (user?: RequestUser): string | Types.ObjectId => {
@@ -28,6 +32,9 @@ const assertValidObjectId = (id: string, resource: string) => {
     throw ApiError.badRequest(`${resource} id must be valid`);
   }
 };
+
+const createInvitationUrl = (token: string) =>
+  `http://${config.host}:${config.port}/api/${config.apiVersion}/workspace/invitation/${token}/accept`;
 
 export const createWorkspaceService = async (
   args: CreateWorkspaceRequest["body"],
@@ -94,28 +101,60 @@ export const workspaceInviteService = async (
     workspace.owner.toString() === inviteeId || members.some((member) => member.toString() === inviteeId);
   if (alreadyMember) throw ApiError.conflict("User is already a member of this workspace");
 
-  const updatedWorkspace = await Workspace.findOneAndUpdate(
-    {
-      _id: workspace._id,
-      owner: requesterId,
-      members: { $ne: invitee._id },
-    },
-    { $addToSet: { members: invitee._id } },
-    { new: true },
-  );
-  if (!updatedWorkspace) throw ApiError.conflict("User is already a member of this workspace");
+  const invitation = await WorkspaceInvite.create({
+    workspaceId: workspace._id,
+    email: invitee.email,
+    invitedBy: requesterId,
+    token: randomBytes(32).toString("hex"),
+  });
 
   await emailService.sendWorkspaceInviteEmail(
     { name: invitee.name, email: invitee.email },
     workspace.name ?? "TaskFlow workspace",
     args.message ?? "",
+    createInvitationUrl(invitation.token),
   );
 
   return {};
+};
+
+export const acceptWorkspaceInvitationService = async (
+  args: WorkspaceInvitationTokenRequest["params"],
+): Promise<AcceptWorkspaceInvitationResponse> => {
+  const invitation = await WorkspaceInvite.findOne({ token: args.token });
+  if (!invitation) throw ApiError.notFound("Invitation not found");
+  if (invitation.accepted) throw ApiError.conflict("Invitation has already been accepted");
+  if (invitation.expiresAt.getTime() <= Date.now()) throw ApiError.badRequest("Invitation has expired");
+
+  const invitee = await User.findOne({ email: invitation.email });
+  if (!invitee) throw ApiError.notFound("Invited user not found");
+
+  const workspace = await Workspace.findById(invitation.workspaceId);
+  if (!workspace) throw ApiError.notFound("Workspace not found");
+
+  const updatedWorkspace = await Workspace.findOneAndUpdate(
+    { _id: workspace._id },
+    { $addToSet: { members: invitee._id } },
+    { returnDocument: "after" },
+  );
+  if (!updatedWorkspace) throw ApiError.internalError("Workspace update failed");
+
+  const acceptedInvitation = await WorkspaceInvite.findOneAndUpdate(
+    { _id: invitation._id, accepted: false },
+    { $set: { accepted: true } },
+    { returnDocument: "after" },
+  );
+  if (!acceptedInvitation) throw ApiError.conflict("Invitation has already been accepted");
+
+  return {
+    workspaceId: workspace._id.toString(),
+    accepted: true,
+  };
 };
 
 export const workspaceService = {
   createWorkspaceService,
   getWorkspaceByIdService,
   workspaceInviteService,
+  acceptWorkspaceInvitationService,
 };

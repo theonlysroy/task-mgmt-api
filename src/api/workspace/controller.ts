@@ -1,6 +1,7 @@
 import type {
   CreateWorkspaceRequest,
   GetWorkspaceByIdRequest,
+  WorkspaceInvitationTokenRequest,
   WorkspaceInviteRequest,
 } from "@/api/workspace/schema.js";
 import { workspaceService } from "@/api/workspace/service.js";
@@ -21,3 +22,10 @@ export const workspaceInviteController = asyncHandler(async (req: WorkspaceInvit
   const data = await workspaceService.workspaceInviteService({ ...req.params, ...req.body }, req.user);
   apiResponse.ok(res, data, "Invitation sent");
 });
+
+export const acceptWorkspaceInvitationController = asyncHandler(
+  async (req: WorkspaceInvitationTokenRequest, res) => {
+    const data = await workspaceService.acceptWorkspaceInvitationService(req.params);
+    apiResponse.ok(res, data, "Invitation accepted");
+  },
+);
