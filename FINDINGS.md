@@ -37,3 +37,16 @@
 - Extend mongoose model interface using `Document`
 
 - mongoose: the `new` option for `findOneAndUpdate()` and `findOneAndReplace()` is deprecated. Use `returnDocument: 'after'` instead.
+
+- Incorrect type. Expected "string". (yaml-schema: docker-compose.yml 0)
+
+- Docker compose environment two syntaxes -
+  - if used List format, need `=` sign to assign value
+    ```txt
+    - ANY_ENV_VARIABLE=value
+    ```
+
+  - if used Dictionary/Map format, remove `-` and use `:` to assign value
+    ```txt
+      ANY_ENV_VARIABLE: "value"
+    ```
