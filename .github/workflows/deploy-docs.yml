@@ -36,10 +36,10 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install -D vitepress@2.0.0-alpha.18
 
       - name: Build docs with VitePress
-        run: npm run docs:build
+        run: npx vitepress build docs
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
