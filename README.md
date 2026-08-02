@@ -4,4 +4,4 @@ TaskFlow is a learning-oriented TypeScript and Express REST API for team task ma
 
 Read the [backend docs](docs/index.md) for setup instructions, architecture, API usage, learning notes, known development findings, troubleshooting, and future work.
 
-Swagger UI is served at `/docs` when the API is running.
+> Swagger UI is served at `/docs` when the API is running.
