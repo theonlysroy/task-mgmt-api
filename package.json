@@ -11,7 +11,8 @@
     "lint:fix": "eslint . --fix",
     "format:check": "prettier --check .",
     "format": "prettier --write .",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "new:module": "node ./src/scripts/new_module.cjs"
   },
   "keywords": [],
   "author": "",
